@@ -1,0 +1,86 @@
+body {
+    font=family: Monospace;
+    padding: 10px;
+}
+
+
+.boxes {
+    display: grid;
+    grid-template-columns: 660px;
+    grid-gap: 10px;
+}
+
+#glCanvas {
+    grid-column: 1;
+    grid-row: 1;
+    padding: 0px;
+    border: 6px solid #000000;
+}
+
+.csndScore {
+    grid-column: 2;
+    grid-row: 1;
+}
+
+.csndCons {
+    grid-column: 1;
+    grid-row: 2;
+    grid-row-gap: 10px;
+}
+
+.controlButts {
+    grid-column: 1;
+    grid-row: 3;
+    position: relative;
+    bottom: 20px;
+}
+
+#play {
+    background-color: #ffffff;
+    border: 1px solid #DCDFE1;
+    color: black;
+    padding: 5px 10px;
+    font-size: 14px;
+    outline-color: #DCDFE1;
+}
+
+#stop {
+    background-color: #ffffff;
+    border: 1px solid #DCDFE1;
+    color: black;
+    padding: 5px 10px;
+    font-size: 14px;
+    outline-color: #DCDFE1;
+}
+.rmsDisp {
+    grid-column: 1;
+    grid-row: 4;
+    position: absolute;
+    top: 500px;
+    left: 451px;
+}
+
+a:link, a:visited {
+    background-color: #ffffff;
+    color: black;
+    padding: 14px 25px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    border: 1px solid #000000;
+}
+
+a:hover, a:active {
+  background-color: #DCDFE1;
+}
+
+#name {
+    font-size: 14px;
+    position: relative;
+    bottom: 80px;
+}
+
+#link {
+    position: relative;
+    top: 50px;
+}
