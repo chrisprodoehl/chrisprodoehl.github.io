@@ -1,6 +1,11 @@
 body {
-    font=family: Monospace;
-    padding: 10px;
+    font-family: Monospace;
+    padding: 18px;
+    font-size: 20px;
+}
+
+h1 {
+    font-size: 28px;
 }
 
 
@@ -15,8 +20,8 @@ body {
     grid-row: 1;
     padding: 0px;
     border: 6px solid #000000;
-    width: 640;
-    height: 480;
+    width: 640px;
+    height: 480px;
 }
 
 .csndScore {
@@ -44,6 +49,8 @@ body {
     padding: 5px 10px;
     font-size: 14px;
     outline-color: #DCDFE1;
+    -webkit-appearance: none;
+    -moz-appearance: none;
 }
 
 #stop {
@@ -53,6 +60,8 @@ body {
     padding: 5px 10px;
     font-size: 14px;
     outline-color: #DCDFE1;
+    -webkit-appearance: none;
+    -moz-appearance: none;
 }
 .rmsDisp {
     grid-column: 1;
@@ -79,7 +88,7 @@ a:hover, a:active {
 #name {
     font-size: 14px;
     position: relative;
-    bottom: 80px;
+    bottom: 75px;
 }
 
 #link {
