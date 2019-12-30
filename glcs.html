@@ -15,7 +15,7 @@
 
 <body>
     <div class="boxes">
-    <canvas id="glCanvas" width="640" height="480"></canvas>
+    <canvas id="glCanvas"></canvas>
     <script>
         var handleMessage = function(message) {
             var messages_textarea = document.getElementById("console");
@@ -150,7 +150,7 @@ void main() {
 </script>
 
 <script id="raymarch.frag" type="text/glsl">
-precision mediump float;
+precision highp float;
 uniform float delt;
 uniform float audioRms;
 uniform float audioRms1;
