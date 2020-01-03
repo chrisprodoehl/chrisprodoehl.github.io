@@ -35,8 +35,9 @@ function main() {
           modelViewMatrix: gl.getUniformLocation(shaderProgram, 'uModelViewMatrix'),
           delt: gl.getUniformLocation(shaderProgram, 'delt'),
           //these audioRms values just get picked up from the scripts above
-          audioRms: gl.getUniformLocation(shaderProgram, 'audioRms'),
-          audioRms1: gl.getUniformLocation(shaderProgram, 'audioRms1'),
+          audioRms: gl.getUniformLocation(shaderProgram, 'audioRms'),   // rms from csound - 1
+          audioRms1: gl.getUniformLocation(shaderProgram, 'audioRms1'), // rms from csound - 2
+          afRms: gl.getUniformLocation(shaderProgram, 'afRms'), // rms from audio file
       },
     };
 
@@ -131,13 +132,16 @@ function drawScene(gl, programInfo, buffers, deltaTime) {
         programInfo.uniformLocations.projectionMatrix,
         false,
         projectionMatrix);
+
     gl.uniformMatrix4fv(
         programInfo.uniformLocations.modelViewMatrix,
         false,
         modelViewMatrix);
+
     gl.uniform1f(programInfo.uniformLocations.delt, delt);
     gl.uniform1f(programInfo.uniformLocations.audioRms, audioRms);
     gl.uniform1f(programInfo.uniformLocations.audioRms1, audioRms1);
+    gl.uniform1f(programInfo.uniformLocations.afRms, afRms);
 
     {
       const offset = 0;

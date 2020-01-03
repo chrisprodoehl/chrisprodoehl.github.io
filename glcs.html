@@ -2,79 +2,186 @@
 
 <head>
     <link rel="stylesheet" href="styles.css">
-    <title>CPP</title>
+    <title>cpp</title>
         <script src="js/csound_extended_short.js"></script>
         <script>
             csound_extended_module().then(function(module) {
                 csound_extended = module;
                 csound = new csound_extended.CsoundWebAudio();
                 console.log("csound_extended_module: csound_extended.js has been loaded.\n");
+                var msg = document.getElementById("cs-display");
+                msg.innerHTML = "csound loaded";
             });
         </script>
+    <p id="glcs-header">Csound runs in realtime and affects (realtime) Web GL.</p>
 </head>
 
 <body>
     <div class="boxes">
+
     <canvas id="glCanvas" width="640" height="480"></canvas>
+<!-- CSOUND -->
     <script>
+    // playing from Csound
         var handleMessage = function(message) {
             var messages_textarea = document.getElementById("console");
             var existing = messages_textarea.value;
             messages_textarea.value = message;
             messages_textarea.scrollTop = messages_textarea.scrollHeight;
         };
-        console.log = handleMessage;
-        var onPlayClick = function() {
+        console.log(handleMessage);
+
+        window.onload=function(){
+        const csPlay = document.querySelector('.csound-controls');
+        var csd = document.getElementById('csd').value;
+        csPlay.addEventListener('click', function() {
+
             if (typeof csound === 'undefined') {
                 console.log("Csound is not yet loaded, wait a bit...");
                 return;
             }
-            var csd = document.getElementById('csd').value;
-            csound.Stop();
-            csound.Reset();
-            csound.CompileCsdText(csd);
-            csound.Start();
-            csound.Perform();
-        };
-        var onPlayStop = function() {
-            csound.Stop();
-            csound.Reset();
-        };
+            // check if context is in suspended state (autoplay policy)
+            else if (this.dataset.playing === 'false') {
+                csound.Stop();
+                csound.Reset();
+                csound.CompileCsdText(csd);
+                csound.Start();
+                csound.Perform();
+                this.dataset.playing = 'true';
+            // if track is playing pause it
+            } else if (this.dataset.playing === 'true') {
+                csound.Stop();
+                csound.Reset();
+                this.dataset.playing = 'false';
+            }
+            let state = this.getAttribute('aria-checked') === "true" ? true : false;
+            this.setAttribute( 'aria-checked', state ? "false" : "true" );
+            }, false);
+            }
+
+        //csound.addEventListener('ended', () => {
+        //    this.dataset.playing = 'false';
+        //    this.setAttribute( "aria-checked", "false" );
+        //}, false);
+
 
         var then = 0;
         var audioRms = 0.0;
         var audioRms1 = 0.0;
 
-        function poll(now) {
+        function pollCsound(now) {
             now = now*0.001;
             const dt = now - then;
             then = now;
-            var msg = document.getElementById("showRms");
             if (typeof csound === 'undefined') {
                 console.log("wait for it...");
             } else {
             audioRms = csound.GetControlChannel("rmsInstr1");
-            msg.innerHTML = audioRms;
             audioRms1 = csound.GetControlChannel("rmsInstr2");
             }
-            requestAnimationFrame(poll);
+            requestAnimationFrame(pollCsound);
         }
-        requestAnimationFrame(poll);
+        requestAnimationFrame(pollCsound);
 
         </script>
-    <div class="csndCons"><textarea id='console' cols=80 rows=2></textarea></div>
-    <div class="controlButts"><p><input id="play" type="button" value="Play" onclick="onPlayClick()">
-        <input id="stop" type="button" value="Stop" onclick="onPlayStop()"></p></div>
-    <div class="rmsDisp"><p id="showRms" font-size="9px" padding="0px"></p></div>
+<!-- AUDIO FILE -->
+        <audio src="sound01022019.mp3" crossOrigin="anonymous"></audio>
+        <script type="text/javascript">
+        //playing from, analyzing audio from, sound file
+            //console.clear();
 
-<div class="csndScore"><textarea id='csd' cols=80 rows=25>
+            //const AudioContext = window.AudioContext || window.webkitAudioContext;
+            const audioCtx = new(window.AudioContext || window.webkitAudioContext)();
+
+            var audioElement = document.querySelector('audio');
+            var track = audioCtx.createMediaElementSource(audioElement);
+            var analyzer = audioCtx.createAnalyser();
+            track.connect(analyzer);
+
+            window.addEventListener("load",function(){
+            const playButton = document.querySelector('.tape-controls-play');
+            // play pause audio
+            playButton.addEventListener('click', function() {
+                // check if context is in suspended state (autoplay policy)
+            	if (audioCtx.state === 'suspended') {
+            		audioCtx.resume();
+            	}
+            	if (this.dataset.playing === 'false') {
+            		audioElement.play();
+            		this.dataset.playing = 'true';
+            	// if track is playing pause it
+            	} else if (this.dataset.playing === 'true') {
+            		audioElement.pause();
+            		this.dataset.playing = 'false';
+            	}
+            	let state = this.getAttribute('aria-checked') === "true" ? true : false;
+            	this.setAttribute( 'aria-checked', state ? "false" : "true" );
+            }, false);
+            }, false);
+
+            audioElement.addEventListener('ended', () => {
+                playButton.dataset.playing = 'false';
+                playButton.setAttribute( "aria-checked", "false" );
+            }, false);
+
+
+            analyzer.fftSize = 64;
+            const bufferLength = analyzer.fftSize;
+            var dataArray = new Uint8Array(bufferLength); // better as floats; floats crashes on mobile
+
+            var then = 0.0;
+            var mean = 0.0;
+            var afRms = 0.0; // audiofile rms
+
+            function getRMS(now) {
+                var now = now*0.0001;
+                const dt = now - then;
+                then = now;
+                dataArray.fill(0);
+
+                analyzer.getByteTimeDomainData(dataArray);
+
+                var square = 0.0;
+                for (var i = 0; i < bufferLength; i++) {
+                    var  v = dataArray[i];
+                    v = v*v;
+                    square += v;
+                }
+
+                mean = square*0.015625; // divide by 64
+                afRms = Math.sqrt(mean);
+                afRms *= 0.0019607; // divide by 512
+                console.log(afRms);
+                requestAnimationFrame(getRMS);
+            }
+            requestAnimationFrame(getRMS);
+
+            track.connect(audioCtx.destination);
+        </script>
+
+    <!--<div class="csndCons"><textarea id='console'></textarea></div>-->
+    <div class="header-text">
+    <p id="description">
+    **Realtime Csound is choppy on mobile, so try playing the file instead.
+    The effect is less fine-grained (rms on the final mix,
+    rather than individual instruments), but it works.</p>
+    </div>
+    <p id="cs-display"></p>
+
+    <button data-playing="false" class="tape-controls-play" role="switch" aria-checked="false">
+        <span>Play File</span></button>
+
+    <button data-playing="false" class="csound-controls" role="switch" aria-checked="false">
+        <span>Play Csound</span></button>
+
+<div class="csndScore"><textarea id='csd' cols=75 rows=37>
 <CsoundSynthesizer>
 <CsOptions>
 -odac -d
 </CsOptions>
 <CsInstruments>
 ;-------------------
-sr=48000
+sr=44100
 ; kr=1000
 ksmps=16
 nchnls=2
@@ -150,16 +257,24 @@ void main() {
 </script>
 
 <script id="raymarch.frag" type="text/glsl">
+// so much here based on work and discussion at https://www.iquilezles.org/index.html.
+// also http://jamie-wong.com/2016/07/15/ray-marching-signed-distance-functions/.
+
 precision highp float;
 #pragma STDGL invariant(all);
 uniform float delt;
 uniform float audioRms;
 uniform float audioRms1;
+uniform float afRms;
 
 const int MAX_STEPS = 15000;
 const float MIN_DIST = 0.0;
 const float MAX_DIST = 2500.0;
 const float thresh = 0.001;
+
+float fit(float v, float omin, float omax, float nmin, float nmax) {
+  return nmin + (v - omin) * (nmax - nmin) / (omax - omin);
+}
 
 mat3 rotateX( float angle) {
     float rad = radians(angle);
@@ -204,8 +319,9 @@ float torusSDF( vec3 p, vec2 t ) {
     return length(q) - t.y;
 }
 
-float twistTor( vec3 p , vec2 t) {
-    float k = 2.5*audioRms+(audioRms1*2.0);
+float twistTor( vec3 p , vec2 t) { // divide by 1024
+    float scaledAfRms = fit(afRms,0.23,0.3,0.0,0.4);
+    float k = 2.5*audioRms+(audioRms1*2.0)+scaledAfRms;
     float c = cos(k*p.y);
     float s = sin(k*p.y);
     mat2 m = mat2(c,-s,s,c);
@@ -302,10 +418,11 @@ void main() {
     vec3 color = vec3(0.0);
 
     if (march_result > (MAX_DIST - thresh))
-    {
+    { // the ray didn't hit anything
         color = vec3(0.5);
-    } // the ray didn't hit anything
-    else { // the ray did hit something
+    }
+    else
+    { // the ray did hit something
         color += diffuse * vec3(0.2+audioRms);
         color += specular * vec3(1.0);
         color.b += clamp(sin(delt+audioRms), 0.0, 0.15);
