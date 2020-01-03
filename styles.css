@@ -6,7 +6,6 @@ body {
 
 h1 {
     font-size: 28px;
-    padding: 0px;
 }
 
 .boxes {
@@ -52,6 +51,8 @@ h1 {
     color: black;
     font-size: 14px;
     outline-color: #DCDFE1;
+    -webkit-appearance: none;
+    -moz-appearance: none;
 }
 
 .csound-controls {
@@ -65,6 +66,8 @@ h1 {
     color: black;
     font-size: 14px;
     outline-color: #DCDFE1;
+    -webkit-appearance: none;
+    -moz-appearance: none;
 }
 
 [role="switch"][aria-checked="true"]  {
