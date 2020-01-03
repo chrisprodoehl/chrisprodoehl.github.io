@@ -1,3 +1,5 @@
+// shortened version of csound-extended.js to make it small enough
+// to serve from the web. 
 
 var csound_extended_module = (function() {
   var _scriptDir = typeof document !== 'undefined' && document.currentScript ? document.currentScript.src : undefined;
