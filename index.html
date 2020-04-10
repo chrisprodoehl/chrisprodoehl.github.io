@@ -1,9 +1,47 @@
 <html>
-<head><link rel="stylesheet" href="styles.css"></head>
-    <body>
-        <h1 id="title">Chris Prodoehl</h1>
+<meta name="viewport" content="initial-scale=0.5">
+<head>
+    <link rel="stylesheet" href="styles.css">
+    <title>c p p </title>
+    <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css?family=Lora|Muli|Open+Sans|Raleway|Roboto+Condensed|Inconsolata|Libre+Franklin|Barlow|Roboto+Slab&display=swap');
+    </style>
+</head>
 
-        <p id="link"><a href="glcs.html">GL+CS</a> &nbsp;&nbsp; WebGL context reads in audio data from realtime Web Csound.</p>
-        <p id="main-description"> Houdini, graphics programming, audio visualizing, some TouchDesigner.  </p>
+    <body>
+        <div id="nav">
+
+        </div>
+
+        <script>
+        $(function(){
+          $("#nav").load("nav.html");
+        });
+        </script>
+            <!--<h1 id="index-title">Chris Prodoehl</h1>-->
+            <p id="index-byline"> Houdini, graphics programming, audio visualizing.  </p>
+
+        <div class="index-container">
+            <div class="index-link-houd">
+                <a class="index-link" href="houdini.html"><div class="overlay_houdini"><p>Houdini</p></div></a>
+                <p><img border="0" src="thumbnails/deform_houd.jpg" width="320" height="180"</p>
+            </div>
+
+            <div class="index-link-realtime">
+                <a class="index-link" href="realtime.html"><div class="overlay_realtime"><p>Real-time</p></div></a>
+                <p><img border="0" src="thumbnails/new_terrain_4-8-20.jpg" width="320" height="180"></a></p>
+            </div>
+
+            <div class="index-link-glcs">
+              <a class="index-link" href="glcs.html"><div class="overlay_web_glcs"><p>Web GL+Csound</p></div></a>
+              <p><img border="0" src="thumbnails/web_glcs1.png" width="320" height="180"></a></p>
+            </div>
+
+            <div class="index-info">
+              <a href=https://vimeo.com/user16642126><p>Vimeo</p></a>
+            </div>
+        </div>
+
     </body>
 </html>

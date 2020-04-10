@@ -1,18 +1,223 @@
+/* some inelegant css */
+/* refresh with ctrl+shift+r to make sure changes appear*/
+
 body {
-    font-family: Monospace;
-    padding: 18px;
-    font-size: 20px;
+    font-family: "lora", sans-serif;
+    padding: 10px;
+    font-size: 19px;
+    line-height: 1.5;
 }
 
 h1 {
-    font-size: 28px;
+    font-size: 32px;
+    font-family: 'barlow', sans-serif;
+    font-weight: 600;
+    margin-top: 30px;
+    margin-bottom: 0px;
+    overflow: hidden;
 }
 
-.boxes {
+nav {
+   position: static;
+   font-family: 'barlow', sans-serif;
+   /*background-color: #f2f2f2;*/
+}
+
+iframe {
+    padding: 2px;
+    display: block;
+    line-height: 0px;
+    border: none;
+}
+
+.pg-descr {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(700px,1fr));
+  grid-column: 1;
+}
+
+/* naviagation bar */
+/* --------------- */
+.nav-main {
+  display: grid;
+  grid-template-columns: minmax(2fr,10vw) repeat(5, 30px);
+  border-bottom: 1px solid #DCDFE1;
+  grid-template-rows: 30px;
+  grid-gap: 5px;
+}
+.nav-main > div {
+  border-radius: 5px;
+}
+.nav-name {
+    position: relative;
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    grid-column: 1 / span 35;
+    grid-row: 1;
+    flex: none;
+    font-family: "libre franklin", serif;
+    font-size: 23px;
+    min-width: 175px;
+}
+.nav-link {
+    position: relative;
+    display: flex;
+    justify-content: space-around;
+    align-items: right;
+    text-align: center;
+    grid-row: 1;
+    flex: none;
+    min-width: minmax(auto, 20px);
+    font-size: 18px;
+}
+
+/*  home page links */
+/* ---------------- */
+a.houdini-link:link, a.houdini-link:visited {
+    background-color: #ffffff;
+    color: grey;
+    text-align: center;
+    text-decoration: none;
+    display: inline;
+    padding-top: 1px;
+    font-size: 14px;
+}
+
+a.houdini-link:hover {
+    color: black;
+}
+
+a.realtime-link:link, a.realtime-link:visited {
+    background-color: #ffffff;
+    color: grey;
+    text-align: center;
+    text-decoration: none;
+    display: inline;
+    padding-top: 1px;
+    font-size: 14px;
+}
+
+a.realtime-link:hover {
+    color: black;
+}
+
+.break {
+    flex-basis: 100%;
+    height: 0;
+}
+
+/* index main page */
+/* --------------- */
+#index-byline {
+    font-size: 16px;
+    position: relative;
+    top: 0px;
+    font-family: 'raleway', sans-serif;
+    font-weight: normal;
+    color: #1e2930;
+}
+.index-container {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(12, minmax(150px,200px));
+    grid-template-rows: repeat(12, minmax(1fr,2fr));
+    grid-auto-flow: row;
+    grid-auto-flow: column;
+    align-items: center;
+}
+/* houdini image link */
+.index-link-houd {
+    grid-column: 1/2;
+    grid-row: 1/2;
+    display: block;
+    grid-row: 1/2;
+    z-index: 1;
+}
+.overlay_houdini {
+  grid-column: 1/2;
+  grid-row: 1/2;
+  position: absolute;
+  display: inline;
+  top: 20px; /* brute force overlay and image align */
+  height: 180px;
+  width: 320px;
+  background: rgb(0,0,0);
+  background: rgba(0,0,0,0.5);
+  color: #f1f1f1;
+  transition: 0.5s ease;
+  opacity: 0;
+  color: white;
+  z-index: 999;
+  text-align: center;
+}
+.overlay_houdini:hover {
+  opacity: 1;
+}
+/* realtime image link */
+.index-link-realtime{
+    grid-column: 1/2;
+    grid-row: 2/3;
+}
+.overlay_realtime {
+  grid-column: 1/2;
+  grid-row: 2/3;
+  position: absolute;
+  display: inline;
+  top: 20px; /* brute force overlay and image align */
+  height: 180px;
+  width: 320px;
+  background: rgb(0,0,0);
+  background: rgba(0,0,0,0.5);
+  color: #f1f1f1;
+  transition: 0.5s ease;
+  opacity: 0;
+  color: white;
+  text-align: center;
+}
+.overlay_realtime:hover {
+  opacity: 1;
+}
+/* web gl csound image link */
+.index-link-glcs{
+    grid-column: 1/2;
+    grid-row: 3/4;
+}
+.overlay_web_glcs {
+  grid-column: 1/2;
+  grid-row: 3/4;
+  position: absolute;
+  top: 20px; /* brute force overlay and image align */
+  height: 180px;
+  width: 320px;
+  background: rgb(0,0,0);
+  background: rgba(0,0,0,0.5);
+  color: #f1f1f1;
+  transition: 0.5s ease;
+  opacity: 0;
+  color: white;
+  z-index: 999;
+  text-align: center;
+}
+.overlay_web_glcs:hover {
+  opacity: 1;
+}
+.index-info {
+  grid-column: 1/2;
+  grid-row: 5/6;
+  font-size: 15px;
+}
+
+/* csound main page */
+/* ---------------- */
+.container {
     display: grid;
     grid-template-columns: repeat(10, 100px);
-    grid-template-rows: 10px, 490px, 10px, 10px, 10px;
+    grid-template-rows: 5px, 490px, 10px, 10px, 10px;
+    grid-auto-flow: row;
+    grid-auto-flow: column;
     grid-gap: 10px;
+    margin: 10px;
 }
 
 #glCanvas {
@@ -23,23 +228,181 @@ h1 {
     height: 480px;
 }
 
-.header-text {
-    grid-column: 1 / 9;
+.realtime-warning {
+    grid-column: 1 / 6;
     grid-row: 4 / 5;
     font-size: 12px;
+    text-align: justify;
+    border-top: 1px solid #DCDFE1;
 }
 
-.csndScore {
-    grid-column: 7 / 8 ;
-    grid-row: 2 / 3;
-}
+@media screen and (min-device-width: 1224px) { /* big screens */
+    .csound-score {
+        grid-column: 7 / 8 ;
+        grid-row: 2 / 3;
+    }
+    #glcs-description {
+        padding-bottom: 5px;
+        font-size: 14px;
+        margin-top: 5px;
+        display: flex;
+    }
+    #realtime-main-descr {
+        padding-bottom: 5px;
+        font-size: 14px;
+        margin-top: 5px;
+        display: flex;
+    }
+    #houd-main-descr {
+        grid-column: 1;
+        padding-bottom: 5px;
+        margin-top: 5px;
+        font-size: 14px;
+        column-span: 1;
+        display: flex;
+    }
+    a.nav:link, a.nav:visited {
 
-.csndCons {
+        /*color: #737373;*/
+        color: black;
+        text-decoration: none;
+        font-size: 15px;
+    }
+    a.nav:hover {
+        color: #0f6dab;
+    }
+    a.nav-name-a:link, a.nav-name-a:visited {
+        /*font-family: "libre franklin", serif;*/
+        color: black;
+        text-decoration: none;
+    }
+    a.nav-name-a:hover {
+        color: #0f6dab;
+    }
+}
+/*===========================*/
+/* settings for small screens*/
+/*==========================*/
+@media screen and (min-device-width: 320px) and (max-device-width: 480px) { /* small screens */
+    /*.csound-score {
+        grid-column: 1 / 6 ;
+        grid-row: 5 / 6;
+    }*/
+    #glcs-description {
+        padding-bottom: 5px;
+        font-size: 22px;
+        margin-top: 5px;
+        display: flex;
+    }
+    #realtime-main-descr {
+        padding-bottom: 5px;
+        font-size: 22px;
+        margin-top: 5px;
+        display: flex;
+    }
+    #houd-main-descr {
+        grid-column: 1;
+        padding-bottom: 5px;
+        margin-top: 5px;
+        font-size: 22px;
+        display: flex;
+    }
+    .nav-main {
+      display: grid;
+      grid-template-columns: minmax(3fr,20vw) repeat(5, 40px);
+      border-bottom: 5px solid #DCDFE1;
+      grid-template-rows: 30px;
+      grid-gap: 5px;
+      padding-bottom: 10px;
+    }
+    a.nav:link, a.nav:visited {
+        /*color: #737373;*/
+        color: black;
+        text-decoration: none;
+        font-size: 25px;
+    }
+    a.nav:hover {
+        color: #0f6dab;
+    }
+    a.nav-name-a:link, a.nav-name-a:visited {
+        font-family: "barlow", serif;
+        /*color: #737373;*/
+        color: black;
+        text-decoration: none;
+        font-size: 30px;
+    }
+    a.nav-name-a:hover {
+        color: #0f6dab;
+    }
+    .overlay_houdini {
+      grid-column: 1/2;
+      grid-row: 1/2;
+      position: absolute;
+      display: inline;
+      top: 20px; /* brute force overlay and image align */
+      height: 180px;
+      width: 320px;
+      background: rgb(0,0,0);
+      background: rgba(0,0,0,0.25);
+      color: #f1f1f1;
+      transition: 0.5s ease;
+      opacity: 1;
+      color: white;
+      z-index: 999;
+      text-align: center;
+    }
+    .overlay_realtime {
+      grid-column: 1/2;
+      grid-row: 2/3;
+      position: absolute;
+      display: inline;
+      top: 20px; /* brute force overlay and image align */
+      height: 180px;
+      width: 320px;
+      background: rgb(0,0,0);
+      background: rgba(0,0,0,0.25);
+      color: #f1f1f1;
+      transition: 0.5s ease;
+      opacity: 1;
+      color: white;
+      text-align: center;
+    }
+    .overlay_web_glcs {
+      grid-column: 1/2;
+      grid-row: 3/4;
+      position: absolute;
+      top: 20px; /* brute force overlay and image align */
+      height: 180px;
+      width: 320px;
+      background: rgb(0,0,0);
+      background: rgba(0,0,0,0.25);
+      color: #f1f1f1;
+      transition: 0.5s ease;
+      opacity: 1;
+      color: white;
+      z-index: 999;
+      text-align: center;
+    }
+}
+.csound-console {
     grid-column: 3 / 4;
     grid-row: 3 / 4;
     height: 125px;
 }
-
+.grain-slide {
+    /*grid-column: 7/11;
+    grid-row: 2/3;*/
+    grid-column: 5/6;
+    grid-row: 3/4;
+    bottom: 20px;
+}
+input[type='range'] {
+	-webkit-appearance: none;
+	border-radius: 5px;
+	box-shadow: inset 0 0 5px #333;
+	background-color: #999;
+  width: 200px;
+}
 .tape-controls-play {
     grid-column: 2 / 3;
     grid-row: 3 / 4;
@@ -54,14 +417,12 @@ h1 {
     -webkit-appearance: none;
     -moz-appearance: none;
 }
-
 .csound-controls {
     grid-column: 1 / 2;
     grid-row: 3 / 4;
     height: 50px;
-
     padding: 5px 10px;
-    //background-color: #ffffff;
+    background-color: #ffffff;
     border: 1px solid #DCDFE1;
     color: black;
     font-size: 14px;
@@ -71,40 +432,122 @@ h1 {
 }
 
 [role="switch"][aria-checked="true"]  {
-  background-color: #DCDFE1;
+  background-color: #ff8533;
 }
 
 [role="switch"][aria-checked="false"] {
   background-color: #ffffff;
 }
-
-a:link, a:visited {
-    background-color: #ffffff;
-    color: black;
-    padding: 14px 25px;
+.csound-controls:hover {
+    background-color: #ff8533;
+}
+.tape-controls-play:hover {
+    background-color: #ff8533;
+}
+#csound-display {
+    grid-column: 3/5;
+    grid-row: 3/4;
+    font-size: 14px;
     text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    border: 1px solid #000000;
+
 }
 
-#cs-display {
-    grid-column: 3 / 6;
-    grid-row: 3 / 4;
+/* realtime main page */
+/* ------------------ */
+.realtime-container {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(640px,1fr));
+    grid-template-rows: repeat(12, minmax(1fr,2fr));
+    grid-auto-flow: row;
+    grid-gap: 5px;
+    align-items: top;
+}
+.realtime-vid1 {
+    padding-top: 12px;
+    grid-column: 1;
+    grid-row: 1/2;
+}
+.realtime-vid1-descr {
+    font-size: 14px;
+    grid-column: 1/2;
+    grid-row: 2/3;
+    justify-content: top;
+}
+.realtime-vid2 {
+    padding-top: 12px;
+    grid-column: 1;
+    grid-row: 3/4;
+}
+.realtime-vid2-descr {
+    font-size: 14px;
+    grid-column: 1/2;
+    grid-row: 4/5;
+}
+.realtime-vid3 {
+    padding-top: 12px;
+    grid-column: 1/2;
+    grid-row: 5/6;
+}
+.realtime-vid3-descr {
+    font-size: 14px;
+    grid-column: 1/2;
+    grid-row: 6/7;
+}
+#glCanvas_flow {
+    grid-column: 1/2;
+    grid-row: 7/8;
+    border: 3px solid #000000;
+}
+.gl-descr {
+    grid-column: 1/2;
+    grid-row: 8/9;
     font-size: 14px;
 }
 
-a:hover, a:active {
-  background-color: #DCDFE1;
+/* houdini main page */
+/* ----------------- */
+.houdini-container {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(640px,1fr));
+    grid-template-rows: repeat(12, minmax(1fr,2fr));
+    grid-auto-flow: row;
+    grid-auto-flow: column;
+    grid-gap: 5px;
+    align-items: top;
+    /*grid-auto-rows: minmax(100px, auto);*/
 }
 
-#main-description {
+.houd-vid1 {
+    padding-top: 12px;
+    grid-column: 1;
+    grid-row: 2/3;
+}
+.houd-vid1-descr {
     font-size: 14px;
-    position: relative;
-    bottom: 90px;
+    grid-column: 1/2;
+    grid-row: 3/4;
+    justify-content: top;
+}
+.houd-vid2 {
+    padding-top: 12px;
+    grid-column: 1;
+    grid-row: 4/5;
+}
+.houd-vid2-descr {
+    font-size: 14px;
+    grid-column: 1/2;
+    grid-row: 5/6;
+}
+.houd-vid3 {
+    padding-top: 12px;
+    grid-column: 1;
+    grid-row: 6/7;
+}
+.houd-vid3-descr {
+    font-size: 14px;
+    grid-column: 1/2;
+    grid-row: 7/8;
 }
 
-#link {
-    position: relative;
-    top: 50px;
+#glcs-link {
 }
