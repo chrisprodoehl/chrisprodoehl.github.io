@@ -1,47 +1,324 @@
 <html>
 <meta name="viewport" content="initial-scale=0.5">
+
 <head>
     <link rel="stylesheet" href="styles.css">
-    <title>c p p </title>
+    <title>Chris Prodoehl</title>
     <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+
     <style>
         @import url('https://fonts.googleapis.com/css?family=Lora|Muli|Open+Sans|Raleway|Roboto+Condensed|Inconsolata|Libre+Franklin|Barlow|Roboto+Slab&display=swap');
     </style>
+
 </head>
 
     <body>
-        <div id="nav">
 
-        </div>
-
+        <div id="top_anchor"></div>
         <script>
         $(function(){
           $("#nav").load("nav.html");
         });
         </script>
-            <!--<h1 id="index-title">Chris Prodoehl</h1>-->
-            <p id="index-byline"> Houdini, graphics programming, audio visualizing.  </p>
 
-        <div class="index-container">
-            <div class="index-link-houd">
-                <a class="index-link" href="houdini.html"><div class="overlay_houdini"><p>Houdini</p></div></a>
-                <p><img border="0" src="thumbnails/deform_houd.jpg" width="320" height="180"</p>
-            </div>
+        <div id="nav"></div>
 
-            <div class="index-link-realtime">
-                <a class="index-link" href="realtime.html"><div class="overlay_realtime"><p>Real-time</p></div></a>
-                <p><img border="0" src="thumbnails/new_terrain_4-8-20.jpg" width="320" height="180"></a></p>
-            </div>
+        <div class="main_container">
 
-            <div class="index-link-glcs">
-              <a class="index-link" href="glcs.html"><div class="overlay_web_glcs"><p>Web GL+Csound</p></div></a>
-              <p><img border="0" src="thumbnails/web_glcs1.png" width="320" height="180"></a></p>
-            </div>
+          <div class="header">
+            <p id="header1">
+              Technical Artist, 3D and visual effects. I spend a lot of time with <a href="#h_anchor">Houdini</a>.
+              I'm also interested in <a href="#rt_anchor">realtime applications</a> and graphics programming, especially <a href="glcs.html">audio-responsive graphics.</a>
+              <br><br>
+              All the work here is from personal projects and all my own, including the music and sound design. You can reach me <a href="mailto:prodoehc@newschool.edu">here</a>.
+            </p>
+          </div>
 
-            <div class="index-info">
-              <a href=https://vimeo.com/user16642126><p>Vimeo</p></a>
+          <!--<div class="about_me">
+            <p id="about" font-weight="700"><label class="ellipsis-toggle">
+              <input type="checkbox">
+              <span class="ellipsis">About</span>
+              <span class="ellipsis-content">I used to be an aspiring academic. I have a PhD in philosophy from NYU. I've also been a musician since was a kid. I do all the scoring and sound design for the videos I make.</span></p>
+          </div>-->
+
+          <h1 id="reel-title">Demo Reel</h1>
+          <div id="reel_anchor"></div>
+
+          <div class="vid"><iframe title="vimeo-player" src="https://player.vimeo.com/video/434579128?byline=0&portrait=0&title=0" width="640" height="360" frameborder="0" allowfullscreen></iframe></div>
+          <div class="col2">
+            <div class="collapsible">
+              <input id="collapsible1" class="toggle" type="checkbox">
+              <label for="collapsible1" class="lbl-toggle"></label>
+              <div class="vid-descr">
+                <div class="inner-descr">
+                  <p>
+                    Everything in the reel is my own work and made from scratch, from modeling and texturing to rigging and animating.<br><br>
+                    I did some procedural modeling in Houdini. The characters were almost all sculpted in Blender, with two exceptions:</p>
+                      <ul><li>In the man and fly shot, I made the human model and its base texture in MakeHuman and then did more painting in Substance Painter.</li>
+                      <li>In the shots with the runners, the runners are one of Houdini's stock bipeds, their running animation one of the stock .bclips.</li></ul>
+                    <p>Texturing throughout with Substance Painter. Rendered mostly with Octane, but in some cases with Renderman or Mantra.</p>
+                </div>
+              </div>
             </div>
+          </div>
+
+          <h1 id="houdini-title">Shorts & Clips</h1>
+          <div id="h_anchor"></div>
+
+          <div class="vid"><iframe title="vimeo-player" src="https://player.vimeo.com/video/432014227?byline=0&portrait=0&title=0" width="640" height="360" frameborder="0" allowfullscreen></iframe></div>
+          <div class="col2">
+            <div class="collapsible">
+              <input id="collapsible2" class="toggle" type="checkbox">
+              <label for="collapsible2" class="lbl-toggle"></label>
+              <div class="vid-descr">
+                <div class="inner-descr">
+                  <p>
+                    Man and Fly<br><br>All the modeling except the human figure was done with Houdini. I modeled the human in MakeHuman and did additional texturing in Substance Painter.
+                    Everything else also textured in Substance Painter. Rendered with Octane.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="vid"><iframe title="vimeo-player" src="https://player.vimeo.com/video/432015058?byline=0&portrait=0&title=0" width="640" height="360" frameborder="0" allowfullscreen></iframe></div>
+          <div class="col2">
+            <div class="collapsible">
+              <input id="collapsible3" class="toggle" type="checkbox">
+              <label for="collapsible3" class="lbl-toggle"></label>
+              <div class="vid-descr">
+                <div class="inner-descr">
+                  <p>
+                    Both characters started as original Blender sculpts, then rigged and animated in Houdini, textured in Substance Painter.
+                    Aside from the character models, everything but the hair was done in Houdini: special attention to modeling the booths, simulating the clothes. Rendered with Octane.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="vid"><iframe title="vimeo-player" src="https://player.vimeo.com/video/432031257?byline=0&portrait=0&title=0" width="640" height="360" frameborder="0" allowfullscreen></iframe></div>
+          <div class="col2">
+            <div class="collapsible">
+              <input id="collapsible4" class="toggle" type="checkbox">
+              <label for="collapsible4" class="lbl-toggle"></label>
+              <div class="vid-descr">
+                <div class="inner-descr">
+                  <p>
+                    The model is a sculpt from scratch. I had been wanting to make a very realistic face, but backed off slightly from it because I liked this guy's look.
+                    The face rig I made in Houdini, but not using the AutoRig tool. I think a lot about efficient ways to rig a face.
+                    Like lots of the rest, textures from scratch with Substance Painter! Rendered with Octane.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="vid"><iframe title="vimeo-player" src="https://player.vimeo.com/video/403545574?byline=0&portrait=0&title=0" width="640" height="360" frameborder="0" allowfullscreen></iframe></div>
+          <div class="col2">
+            <div class="collapsible">
+              <input id="collapsible5" class="toggle" type="checkbox">
+              <label for="collapsible5" class="lbl-toggle"></label>
+              <div class="vid-descr">
+                <div class="inner-descr">
+                  <p>
+                    One of the expressive goals here was to keep the source of the movement (the object of fear?) out of sight for as long as possible.
+                      Crowd sim with one of the stock Houdini bipeds.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="vid"><iframe title="vimeo-player" src="https://player.vimeo.com/video/432711723?byline=0&portrait=0&title=0" width="640" height="360" frameborder="0" allowfullscreen></iframe></div>
+          <div class="col2">
+            <div class="collapsible">
+              <input id="collapsible6" class="toggle" type="checkbox">
+              <label for="collapsible6" class="lbl-toggle"></label>
+              <div class="vid-descr">
+                <div class="inner-descr">
+                  <p>
+                    Looks kind of like cloth, but it isn't a physical simulation.
+                    Experiments with averaging primitive transforms, inspired in part by the technique of averaging point positions. With the initial conditions, you get nice curling and folding effects.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="vid"><iframe src="https://player.vimeo.com/video/403544841?title=0&byline=0&portrait=0" width="640" height="360" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe></div>
+          <div class="col2">
+            <div class="collapsible">
+              <input id="collapsible7" class="toggle" type="checkbox">
+              <label for="collapsible7" class="lbl-toggle"></label>
+              <div class="vid-descr">
+                <div class="inner-descr">
+                  <p>
+                    A collection of abstract/procedural/simulated material.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="vid"><iframe title="vimeo-player" src="https://player.vimeo.com/video/403548150?byline=0&portrait=0&title=0" width="640" height="360" frameborder="0" allowfullscreen></iframe></div>
+          <div class="col2">
+            <div class="collapsible">
+              <input id="collapsible8" class="toggle" type="checkbox">
+              <label for="collapsible8" class="lbl-toggle"></label>
+              <div class="vid-descr">
+                <div class="inner-descr">
+                  <p>
+                    Mini tornado: smoke sim, vellum grains whipped around by the smoke sim, and so on.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <h1 id="realtime-title">Realtime</h1>
+          <div id="rt_anchor"></div>
+
+          <div class="vid"><iframe src="https://player.vimeo.com/video/382865759?byline=0&portrait=0&title=0" width="640" height="360" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe></div>
+          <div class="col2">
+            <div class="collapsible">
+              <input id="collapsible9" class="toggle" type="checkbox">
+              <label for="collapsible9" class="lbl-toggle"></label>
+              <div class="vid-descr">
+                <div class="inner-descr">
+                  <p>
+                    Screen Recording. The demo was written with OpenGL and uses the <a href="https://csound.com/">Csound</a> API.
+                    It's harder to tell without interacting with the program, but the pitch of the sound is sensitive to the height of camera view.
+                    The terrain and the clouds are generated from noise maps or functions. The whole thing is rendered via raymarching.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="vid"><iframe src="https://player.vimeo.com/video/432728218?byline=0&portrait=0&title=0" width="640" height="360" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe></div>
+          <div class="col2">
+            <div class="collapsible">
+              <input id="collapsible10" class="toggle" type="checkbox">
+              <label for="collapsible10" class="lbl-toggle"></label>
+              <div class="vid-descr">
+                <div class="inner-descr">
+                  <p>
+                    Screen Recording. OpenGL and Csound. The particle system is responsive to the audio signal Csound generates. The particles are solved in a compute shader.
+                    The audio could go on indefinitely (it's "algorithmic" in basically the most boring sense).
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="vid"><iframe src="https://player.vimeo.com/video/383017020?byline=0&portrait=0&title=0" width="640" height="360" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe></div>
+          <div class="col2">
+            <div class="collapsible">
+              <input id="collapsible11" class="toggle" type="checkbox">
+              <label for="collapsible11" class="lbl-toggle"></label>
+              <div class="vid-descr">
+                <div class="inner-descr">
+                  <p>
+                    Screen Recording. OpenGL and Csound.
+                    The music is being read from a Csound score and synthesized in real time, though here it wouldn't make a difference if it were a recording.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="vid"><iframe src="https://player.vimeo.com/video/287184346?byline=0&portrait=0&title=0" width="640" height="360" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe></div>
+          <div class="col2">
+            <div class="collapsible">
+              <input id="collapsible12" class="toggle" type="checkbox">
+              <label for="collapsible12" class="lbl-toggle"></label>
+              <div class="vid-descr">
+                <div class="inner-descr">
+                  <p>
+                    Short a/v piece from a couple years ago, made in TouchDesigner. This video is from an offline render, but it runs easily at interactive framerates.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <button onclick="topFunction()" id="top_btn" title="Go to top">top</button>
+
         </div>
 
+          <script>
+          let myLabels = document.querySelectorAll('.lbl-toggle');
+
+          Array.from(myLabels).forEach(label => {
+            label.addEventListener('keydown', e => {
+              // 32 === spacebar
+              // 13 === enter
+              if (e.which === 32 || e.which === 13) {
+                e.preventDefault();
+                label.click();
+              };
+            });
+          });
+
+          var coll = document.getElementsByClassName("lbl-toggle");
+          var i;
+
+          for (i = 0; i < coll.length; i++) {
+            coll[i].addEventListener("click", function() {
+              this.classList.toggle("active");
+              var content = this.nextElementSibling;
+              /*if (content.style.display === "block") {
+                content.style.display = "none";
+              } else {
+                content.style.display = "block";
+              }*/
+              console.log(content.style.maxHeight);
+              content.style.transitionDuration = "0.25s";
+              if (content.style.maxHeight) {
+                  content.style.maxHeight = null;
+              } else {
+                  content.style.maxHeight = content.scrollHeight + "px";
+              }
+            });
+          }
+          </script>
+
+          <script>
+          // When the user scrolls the page, execute myFunction
+          window.onscroll = function() {myFunction()};
+
+          // Get the navbar
+          var navbar = document.getElementById("nav");
+
+          var mybutton = document.getElementById("top_btn");
+          mybutton.style.display = "none";
+
+          // Get the offset position of the navbar
+          var sticky = navbar.offsetTop;
+
+          // Add the sticky class to the navbar when you reach its scroll position. Remove "sticky" when you leave the scroll position
+          function myFunction() {
+              if (window.pageYOffset >= sticky) {
+                navbar.classList.add("sticky")
+              } else {
+                navbar.classList.remove("sticky");
+              }
+
+              if (document.body.scrollTop > 40 || document.documentElement.scrollTop > 40) {
+                mybutton.style.display = "block";
+              } else {
+                mybutton.style.display = "none";
+              }
+          }
+
+          // When the user clicks on the button, scroll to the top of the document
+          function topFunction() {
+              document.body.scrollTop = 0; // For Safari
+              document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+          }
+          </script>
+
     </body>
+
 </html>

@@ -38,6 +38,7 @@ function main() {
           audioRms: gl.getUniformLocation(shaderProgram, 'audioRms'),   // rms from csound - 1
           audioRms1: gl.getUniformLocation(shaderProgram, 'audioRms1'), // rms from csound - 2
           afRms: gl.getUniformLocation(shaderProgram, 'afRms'), // rms from audio file
+          dragX: gl.getUniformLocation(shaderProgram, 'dragX'), // dragX on canvas
       },
     };
 
@@ -142,6 +143,7 @@ function drawScene(gl, programInfo, buffers, deltaTime) {
     gl.uniform1f(programInfo.uniformLocations.audioRms, audioRms);
     gl.uniform1f(programInfo.uniformLocations.audioRms1, audioRms1);
     gl.uniform1f(programInfo.uniformLocations.afRms, afRms);
+    gl.uniform1f(programInfo.uniformLocations.dragX, dragX);
 
     {
       const offset = 0;

@@ -2,7 +2,7 @@
 <meta name="viewport" content="initial-scale=0.5">
 <head>
     <link rel="stylesheet" href="styles.css">
-    <title>c p p </title>
+    <title>Chris Prodoehl</title>
     <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css?family=Lora|Muli|Open+Sans|Raleway|Roboto+Condensed|Inconsolata|Libre+Franklin|Barlow|Roboto+Slab&display=swap');
@@ -34,9 +34,9 @@
 
     <h1 id="glcs-title">Web Csound + Web GL</h1>
     <div class="break"></div>
-        <div class="pg-descr"><p id="glcs-description">Real-time audio responsive graphics with Web Csound and Web GL.
-            When playing Csound (not from the file), you can move the slider to affect grain density (higher values = denser grains).
-            You can tap and drag along the x-axis to rotate the camera.</p></div>
+        <div class="pg-descr"><p id="glcs-description">"Live-as-possible" audio-responsive graphics. Everyting is loaded in your browser: Web GL and Web Csound, a web-based version of <a href="http://csound.com">Csound</a>.
+            Csound will play a couple instruments, one of which is a simple granular synth. You can move the slider below to affect grain density (higher values = denser grains; the slider has no effect when you play the audio file).
+            You can also tap and drag along the x-axis to rotate the camera.</p></div>
     <div class="break"></div>
     <div class="container">
     <canvas id="glCanvas" width="640" height="480"></canvas>
@@ -88,60 +88,40 @@
         {
           const csPlay = document.querySelector('.csound-controls');
           var csd = document.getElementById('csd').value;
+          var messages_textarea = document.getElementById('csound-display');
 
-          csPlay.addEventListener('click', function() {
-              if (typeof csound === 'undefined') {
-                  console.log("Csound is not yet loaded, wait a bit...");
-                  return;
-              }
-              // check if context is in suspended state (autoplay policy)
-              else if (this.dataset.playing === 'false') {
-                  csound.Stop();
-                  csound.Reset();
-                  document.querySelector("#slider1Output").value = grainDens;
-                  csound.SetControlChannel("grainDens", grainDens);
-                  csound.CompileCsdText(csd);
-                  csound.Start();
-                  csound.Perform();
-                  this.dataset.playing = 'true';
-              // if track is playing pause it
-              } else if (this.dataset.playing === 'true') {
-                  csound.Stop();
-                  csound.Reset();
-                  this.dataset.playing = 'false';
-              }
-              let state = this.getAttribute('aria-checked') === "true" ? true : false;
-              this.setAttribute( 'aria-checked', state ? "false" : "true" );
-              }, false);
-
-              csPlay.addEventListener("touchstart", e => {
-                  e.preventDefault();
-                  if (typeof csound === 'undefined') {
-                      console.log("Csound is not yet loaded, wait a bit...");
-                      return;
-                  }
-                  // check if context is in suspended state (autoplay policy)
-                  else if (this.dataset.playing === 'false') {
-                      this.dataset.playing = 'true';
-                      csound.Stop();
-                      csound.Reset();
-                      document.querySelector("#slider1Output").value = grainDens;
-                      csound.SetControlChannel("grainDens", grainDens);
-                      csound.CompileCsdText(csd);
-                      csound.Start();
-                      csound.Perform();
-
-                  // if track is playing pause it
-                  } else if (this.dataset.playing === 'true') {
-                      this.dataset.playing = 'false';
-                      csound.Stop();
-                      csound.Reset();
-
-                  }
-                  let state = this.getAttribute('aria-checked') === "true" ? true : false;
-                  this.setAttribute( 'aria-checked', state ? "false" : "true" );
-                  }, false);
+          function handler(e) {
+            e.preventDefault();
+            if (typeof csound === 'undefined') {
+                console.log("Csound is not yet loaded, wait a bit...");
+                messages_textarea.innerHTML = "wait for csound to load";
+                this.dataset.playing = 'false';
+                return;
             }
+            // check if context is in suspended state (autoplay policy)
+            else if (this.dataset.playing === 'false') {
+                csound.Stop();
+                csound.Reset();
+                document.querySelector("#slider1Output").value = grainDens;
+                csound.SetControlChannel("grainDens", grainDens);
+                csound.CompileCsdText(csd);
+                csound.Start();
+                csound.Perform();
+                this.dataset.playing = 'true';
+            // if track is playing pause it
+            } else if (this.dataset.playing === 'true') {
+                csound.Stop();
+                csound.Reset();
+                this.dataset.playing = 'false';
+            }
+            let state = this.getAttribute('aria-checked') === "true" ? true : false;
+            this.setAttribute( 'aria-checked', state ? "false" : "true" );
+            console.log(state);
+          }
+
+          csPlay.addEventListener('click', handler, false);
+          csPlay.addEventListener('touchstart', handler, false);
+        }
 
         var then = 0;
         var audioRms = 0.0;
@@ -170,7 +150,7 @@
         </script>
 
         <!-- AUDIO FILE -->
-        <audio src="sound01022019.mp3" crossOrigin="anonymous"></audio>
+        <audio src="audio/sound_4-23-20.mp3" crossOrigin="anonymous"></audio>
         <script type="text/javascript">
         //playing from, analyzing audio from, sound file
             //console.clear();
@@ -183,31 +163,36 @@
             var analyzer = audioCtx.createAnalyser();
             track.connect(analyzer);
 
-            window.addEventListener("load",function(){
-            const playButton = document.querySelector('.tape-controls-play');
-            // play pause audio
-            playButton.addEventListener('click', function() {
-                // check if context is in suspended state (autoplay policy)
-            	if (audioCtx.state === 'suspended') {
-            		audioCtx.resume();
-            	}
-            	if (this.dataset.playing === 'false') {
-            		audioElement.play();
-            		this.dataset.playing = 'true';
-              }
-            	// if track is playing pause it
-            	else if (this.dataset.playing === 'true') {
-            		audioElement.pause();
-            		this.dataset.playing = 'false';
-            	}
-            	let state = this.getAttribute('aria-checked') === "true" ? true : false;
-            	this.setAttribute( 'aria-checked', state ? "false" : "true" );
-            }, false);
-            }, false);
+            window.addEventListener("load",function()
+            {
 
-            audioElement.addEventListener('ended', () => {
-                playButton.dataset.playing = 'false';
-                playButton.setAttribute( "aria-checked", "false" );
+              const playButton = document.querySelector('#file-play');
+
+              // play pause audio
+              playButton.addEventListener('click', function() {
+                  // check if context is in suspended state (autoplay policy)
+              	if (audioCtx.state === 'suspended') {
+              		audioCtx.resume();
+              	}
+              	if (this.dataset.playing === 'false') {
+              		audioElement.play();
+              		this.dataset.playing = 'true';
+                }
+              	// if track is playing pause it
+              	else if (this.dataset.playing === 'true') {
+              		audioElement.pause();
+              		this.dataset.playing = 'false';
+              	}
+              	let state = this.getAttribute('aria-checked') === "true" ? true : false;
+              	this.setAttribute('aria-checked', state ? "false" : "true");
+                console.log(state);
+              }, false);
+
+              audioElement.addEventListener('ended', () => {
+                  playButton.setAttribute( "aria-checked", "false" );
+                  playButton.background = "white";
+              }, false);
+
             }, false);
 
             analyzer.fftSize = 64;
@@ -236,7 +221,7 @@
                 mean = square*0.015625; // divide by 64
                 afRms = Math.sqrt(mean);
                 afRms *= 0.0019607; // divide by 512
-                console.log(afRms);
+                //console.log(afRms);
                 requestAnimationFrame(getRMS);
             }
             requestAnimationFrame(getRMS);
@@ -252,11 +237,12 @@
     </div>
     <p id="csound-display"></p>
 
-    <button data-playing="false" class="tape-controls-play" role="switch" aria-checked="false">
+    <button data-playing="false" class="tape-controls-play" id="file-play" role="switch" aria-checked="false">
         <span>Play File</span></button>
 
     <button data-playing="false" class="csound-controls" id="cs-play" role="switch" aria-checked="false">
         <span>Play Csound</span></button>
+
     <div class="grain-slide"<span>
     <input type="range" id="slider1" min=0.01 max=10.0 step=0.01 oninput="on_slider1(value)"></input>
     <output for="slider1" id="slider1Output">5.0</ouptut>
@@ -424,8 +410,8 @@ vec2 sceneSDF( vec3 p ) {
     vec3 transp = p + vec3(1.0+sin(delt), 0.0, 0.0) * rotateY(180.0);
     vec3 rotP = rotX*rotZ*transp;
     vec3 dom = vec3(0.5, 2.0, 0.125);
-    p.xz += 0.15*cos(1.25*p.y-1.0*delt+(audioRms*10.0));
-    float cyl1 = sdCylinder(p, dom); p.xz += 0.15*sin(1.0*p.y-1.0*delt*(audioRms*3.0));
+    p.xz += 0.15*cos(1.25*p.y-1.0*delt+(audioRms*10.0) + (afRms*10.0));
+    float cyl1 = sdCylinder(p, dom); p.xz += 0.15*sin(1.0*p.y-1.0*delt*(audioRms*3.0+afRms*3.0));
     float cyl2 = sdCylinder(p, dom);
     //vec2 result = vec2(twistTor(rotP, vec2(1.0)),  2.0);
     vec2 result = vec2(cyl1, 2.0);
@@ -531,7 +517,7 @@ void main() {
 }
 </script>
 
-<script src="gl-matrix.js"></script>
-<script src="webgl.js"></script>
+<script src="js/gl-matrix.js"></script>
+<script src="js/webgl.js"></script>
 
 </html>
