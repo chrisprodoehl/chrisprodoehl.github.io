@@ -32,11 +32,11 @@
     });
     </script>
 
-    <h1 id="glcs-title">Web Csound + Web GL</h1>
+    <h1 id="glcs-title">Audiovisual Synth</h1>
     <div class="break"></div>
-        <div class="pg-descr"><p id="glcs-description">"Live-as-possible" audio-responsive graphics. Everyting is loaded in your browser: Web GL and Web Csound, a web-based version of <a href="http://csound.com">Csound</a>.
-            Csound will play a couple instruments, one of which is a simple granular synth. You can move the slider below to affect grain density (higher values = denser grains; the slider has no effect when you play the audio file).
-            You can also tap and drag along the x-axis to rotate the camera.</p></div>
+        <div class="pg-descr"><p id="glcs-description">Really realtime in the sense that everyting runs in the browser: Web GL draws frames and Web Csound (a web-based version of <a href="http://csound.com">Csound</a>)
+            synthesizes audio.* One of the instruments Csound plays is a simple granular synth, and you can adjust its grain density with the slider below (higher values = denser grains; the slider has no effect when you play the audio file).
+            You can also click/tap and drag along the x-axis to move the view around a little.</p></div>
     <div class="break"></div>
     <div class="container">
     <canvas id="glCanvas" width="640" height="480"></canvas>
@@ -83,7 +83,10 @@
         };
         console.log(handleMessage);
 
-        var grainDens = 5.0;
+        var grainDens = 3.0;
+        var audioRms = 0.0;
+        var audioRms1 = 0.0;
+
         window.onload=function()
         {
           const csPlay = document.querySelector('.csound-controls');
@@ -108,10 +111,12 @@
                 csound.Start();
                 csound.Perform();
                 this.dataset.playing = 'true';
+                audioRms = 0.0; // reset accumulating Rms
             // if track is playing pause it
             } else if (this.dataset.playing === 'true') {
                 csound.Stop();
                 csound.Reset();
+                audioRms = 0.0; // reset accumulating Rms
                 this.dataset.playing = 'false';
             }
             let state = this.getAttribute('aria-checked') === "true" ? true : false;
@@ -124,8 +129,10 @@
         }
 
         var then = 0;
-        var audioRms = 0.0;
-        var audioRms1 = 0.0;
+        var cs_currRms = 0.0;
+        var cs_lastRms = 0.0;
+        var cs_deltRms = 0.0;
+
 
         function on_slider1(value) {
             grainDens = parseFloat(value);
@@ -137,13 +144,21 @@
             now = now*0.001;
             const dt = now - then;
             then = now;
+
             if (typeof csound === 'undefined') {
                 console.log("wait for it...");
             } else {
-            audioRms = csound.GetControlChannel("rmsInstr1");
+            cs_currRms = csound.GetControlChannel("rmsInstr1");
             audioRms1 = csound.GetControlChannel("rmsInstr2");
             }
+
+            cs_deltRms = cs_currRms - cs_lastRms;
+            cs_lastRms = cs_currRms;
+
             requestAnimationFrame(pollCsound);
+
+            // accumulate rms but periodically zero out
+            if (cs_currRms>0.02) { audioRms = cs_currRms; }
         }
         requestAnimationFrame(pollCsound);
 
@@ -156,12 +171,14 @@
             //console.clear();
 
             //const AudioContext = window.AudioContext || window.webkitAudioContext;
-            const audioCtx = new(window.AudioContext || window.webkitAudioContext)();
 
+            const audioCtx = new(window.AudioContext || window.webkitAudioContext)();
             var audioElement = document.querySelector('audio');
             var track = audioCtx.createMediaElementSource(audioElement);
             var analyzer = audioCtx.createAnalyser();
             track.connect(analyzer);
+
+            var afRms = 0.0; // audiofile rms
 
             window.addEventListener("load",function()
             {
@@ -171,7 +188,11 @@
               // play pause audio
               playButton.addEventListener('click', function() {
                   // check if context is in suspended state (autoplay policy)
-              	if (audioCtx.state === 'suspended') {
+                // better as floats; floats crashes on mobile
+
+
+
+                if (audioCtx.state === 'suspended') {
               		audioCtx.resume();
               	}
               	if (this.dataset.playing === 'false') {
@@ -181,7 +202,9 @@
               	// if track is playing pause it
               	else if (this.dataset.playing === 'true') {
               		audioElement.pause();
-              		this.dataset.playing = 'false';
+                  this.dataset.playing = 'false';
+                  audioElement.currentTime = 0;
+                  afRms = 0.0; // reset the accumulating Rms
               	}
               	let state = this.getAttribute('aria-checked') === "true" ? true : false;
               	this.setAttribute('aria-checked', state ? "false" : "true");
@@ -191,25 +214,34 @@
               audioElement.addEventListener('ended', () => {
                   playButton.setAttribute( "aria-checked", "false" );
                   playButton.background = "white";
+                  playButton.dataset.playing = "false";
+                  audioElement.currentTime = 0;
+                  afRms = 0.0;
               }, false);
 
             }, false);
 
             analyzer.fftSize = 64;
             const bufferLength = analyzer.fftSize;
-            var dataArray = new Uint8Array(bufferLength); // better as floats; floats crashes on mobile
+            var dataArray = new Uint8Array(bufferLength);
 
             var then = 0.0;
             var mean = 0.0;
+            var currRms = 0.0;
+            var lastRms = 0.0;
+            var deltRms = 0.0;
             var afRms = 0.0; // audiofile rms
 
             function getRMS(now) {
                 var now = now*0.0001;
                 const dt = now - then;
                 then = now;
+
                 dataArray.fill(0);
 
                 analyzer.getByteTimeDomainData(dataArray);
+
+                  console.log(dataArray);
 
                 var square = 0.0;
                 for (var i = 0; i < bufferLength; i++) {
@@ -219,21 +251,26 @@
                 }
 
                 mean = square*0.015625; // divide by 64
-                afRms = Math.sqrt(mean);
-                afRms *= 0.0019607; // divide by 512
-                //console.log(afRms);
+                currRms = Math.sqrt(mean);
+                currRms *= 0.0019607; // divide by 512
+                currRms -= 0.25; // zero out the rms
+                console.log(currRms);
+
+                deltRms = currRms - lastRms;
+                lastRms = currRms;
+
                 requestAnimationFrame(getRMS);
+
+                if (currRms>0.00) { afRms += deltRms; }
+
             }
             requestAnimationFrame(getRMS);
-
             track.connect(audioCtx.destination);
         </script>
 
     <!--<div class="csndCons"><textarea id='console'></textarea></div>-->
     <div class="realtime-warning">
-    <p>**Real-time Csound is basically unlistenable on mobile, so try playing the file instead.
-    The effect is less fine-grained (rms on the final mix,
-    rather than individual instruments), but better than hearing noise!</p>
+    <p>*Mileage will vary on mobile. Web Csound is often unlistenable, so try playing the file instead.</p>
     </div>
     <p id="csound-display"></p>
 
@@ -244,8 +281,8 @@
         <span>Play Csound</span></button>
 
     <div class="grain-slide"<span>
-    <input type="range" id="slider1" min=0.01 max=10.0 step=0.01 oninput="on_slider1(value)"></input>
-    <output for="slider1" id="slider1Output">5.0</ouptut>
+    <input type="range" id="slider1" min=0.01 max=6.0 step=0.01 oninput="on_slider1(value)"></input>
+    <output for="slider1" id="slider1Output">3.0</ouptut>
     </span></div>
 
 <div class="csound-score"><textarea hidden id='csd' cols=75 rows=15>
@@ -267,7 +304,7 @@ gaRvbSend   init    0
 gkGrainDens init    2
 ;-------------------
 instr 1
-kFreq         = 100
+kFreq         = 300
 kFmd          = kFreq * 0.2
 aGrainEnv     = 0.2; linseg 1,p5,p6 ; start at 1, over p5, go to p6
 kgdur         = aGrainEnv
@@ -407,15 +444,42 @@ float sdCylinder(vec3 p, vec3 c) {
 vec2 sceneSDF( vec3 p ) {
     mat3 rotX = rotateX(delt*90.0);
     mat3 rotZ = rotateZ(delt*90.0);
-    vec3 transp = p + vec3(1.0+sin(delt), 0.0, 0.0) * rotateY(180.0);
+    vec3 transp = p + 0.5*vec3(sin(delt), cos(delt), 0.0);
     vec3 rotP = rotX*rotZ*transp;
-    vec3 dom = vec3(0.5, 2.0, 0.125);
-    p.xz += 0.15*cos(1.25*p.y-1.0*delt+(audioRms*10.0) + (afRms*10.0));
-    float cyl1 = sdCylinder(p, dom); p.xz += 0.15*sin(1.0*p.y-1.0*delt*(audioRms*3.0+afRms*3.0));
-    float cyl2 = sdCylinder(p, dom);
-    //vec2 result = vec2(twistTor(rotP, vec2(1.0)),  2.0);
-    vec2 result = vec2(cyl1, 2.0);
+    vec3 dom = vec3(0.5, 2.0, 0.225);
+
+    float sin_afRms = sin(afRms);
+    float cos_afRms = cos(afRms);
+    float sin_audioRms = sin(audioRms*0.5);
+
+    // cylinder1
+    p.xz += 0.3*cos(1.25*p.y-1.0*delt);
+    float cyl1 = sdCylinder(p, dom);
+
+    //cylinder2
+    p.xz += (sin_afRms*0.3+audioRms*0.1)*sin(2.0*p.y-1.0*(delt+afRms+audioRms));
+    float cyl2 = sdCylinder(p+vec3(3.0,0.0,1.0+afRms), dom);
+
+    //cylinder3
+    p.xz -= 0.34*sin(2.0*p.y-2.0*(delt-afRms*2.0-audioRms*2.0));
+    //if (afRms > 0.5) { p.xz += cos(afRms*4.0); }
+    float cyl3 = sdCylinder(p+transp, dom);
+
+    //cylinder5
+    p.xz -= (cos_afRms*0.2+audioRms*0.2)*sin(2.0*p.y-1.0*delt);
+    float cyl4 = sdCylinder(p+vec3(2.0,0.0,1.0) * 2.0, dom);
+
+    //cylinder5
+    p.xz += 0.4*cos(1.25*p.y+2.0*(delt + afRms + audioRms)); //*(audioRms*3.0+afRms*3.0));
+    //if (afRms > 0.5) { p.xz += cos(afRms*4.0); }
+    float cyl5 = sdCylinder(p+vec3(-2.0,0.0+cos_afRms,0.0) * 1.5, dom);
+
+    vec2 result = vec2(cyl1, 1.0);
     result = opU(result, vec2(cyl2, 2.0));
+    result = opU(result, vec2(cyl3, 3.0));
+    result = opU(result, vec2(cyl4, 4.0));
+    result = opU(result, vec2(cyl5, 5.0));
+
     return result;
 }
 
@@ -474,24 +538,25 @@ vec3 calcNormal( const vec3 pos, float depth)
 }
 float drag = 0.0;
 void main() {
-    drag += dragX*0.05; // divide by 640
+    drag += dragX*0.01; // divide by 640
     //mat3 rotX = rotateX(sin(dragX));
     vec2 res = vec2(640.0,480.0);
     vec2 fragCoord = gl_FragCoord.xy;
     vec2 screenUV = normScreenCoords(fragCoord, res);
-    float camX = 2.0+sin(drag)*5.0;
-    float camZ = 5.0+cos(drag)*5.0;
-    vec3 camPos = vec3(camX,4.0,camZ) * rotateX(-20.0) * rotateY(-30.0) * rotateZ(95.0);
+    float camX = 5.0+sin(drag)*2.0;
+    float camZ = 5.0+cos(drag)*4.0;
+    vec3 camPos = vec3(camX,-1.0,camZ) * rotateX(15.0) * rotateZ(-80.0);
     vec3 camFront = vec3(0.0,1.0,0.0);
     vec3 camTarget = camFront - camPos;
     vec3 rd = rayDir(screenUV, camPos, camTarget);
 
-    float march_result = castRay(camPos, rd.xyz, MIN_DIST, MAX_DIST).x;
-    float objID = castRay(camPos, rd, MIN_DIST, MAX_DIST).y;
+    vec2 ray_payload = castRay(camPos, rd.xyz, MIN_DIST, MAX_DIST);
+    float march_result = ray_payload.x;
+    float matID = ray_payload.y;
     vec3 surfacePos = camPos + rd*march_result;
 
-    float shininess = 4.0;
-    vec3 lightDir = vec3(0.0, 0.4, 0.3);
+    float shininess = 8.0;
+    vec3 lightDir = vec3(0.42, 0.1, 0.2);
     vec3 N = calcNormal(surfacePos, march_result);
     vec3 L = normalize(lightDir); //normalize(lightDir - surfacePos);
     vec3 V = normalize(camPos - surfacePos);
@@ -501,6 +566,20 @@ void main() {
     float specular = pow(dot(R,V), shininess);
 
     vec3 color = vec3(0.0);
+    vec3 obj1_color = vec3(0.4);
+    vec3 obj2_color = vec3(0.1, 0.0, 0.0);
+    vec3 obj3_color = vec3(0.1, 0.1, 0.1) + vec3(sin(afRms), 0.0, 0.0) + vec3(sin(audioRms), 0.0, 0.0);
+    vec3 obj4_color = vec3(0.4, 0.0, 0.2) + vec3(0.0,0.0,sin(afRms)) + vec3(0.0,0.0,sin(audioRms));
+    vec3 obj5_color = vec3(0.1, 0.0, 0.1);
+
+    vec3 spec_color = vec3(1.0);
+    vec3 ambient = vec3(1.2);
+
+    //ambient.r += clamp(cos(delt)+0.5, 0.02, 1.5);
+    ambient.b += clamp((sin(audioRms)*1.8), 0.02, 1.6);
+    if (afRms>0.24) { ambient.b += clamp((afRms*1.8), 0.02, 1.6); }
+    ambient.b += clamp((audioRms*1.8), 0.02, 1.6);
+
 
     if (march_result > (MAX_DIST - thresh))
     { // the ray didn't hit anything
@@ -508,10 +587,32 @@ void main() {
     }
     else
     { // the ray did hit something
-        color += diffuse * vec3(0.1+audioRms);
-        color += specular * vec3(1.0);
-        color.r += clamp(sin(delt), 0.0, 0.15);
+      if (matID==1.0) {
+        color += obj1_color * diffuse * ambient;
+        color += specular * spec_color;
+      }
+      else if (matID==2.0) {
+        color += obj2_color * diffuse * ambient;
+        color += specular*0.4 * spec_color;
+      }
+      else if (matID==3.0) {
+        color += obj3_color * diffuse * ambient;
+        color += specular*1.2 * spec_color;
+      }
+      else if (matID==4.0) {
+        color += obj4_color * diffuse * ambient;
+        color += specular*1.2 * spec_color;
+      }
+      else if (matID==5.0) {
+        color += obj3_color * diffuse * ambient;
+        color += specular*0.5 * spec_color;
+      }
     }
+
+    vec3 fog_color = vec3(0.4);
+    float fog_amount = 1.0 - exp(-march_result*0.05);
+    color = mix(color, fog_color, fog_amount*rd.y);
+
     gl_FragColor = vec4(color, 1.0);
 
 }
