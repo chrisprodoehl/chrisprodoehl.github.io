@@ -2,6 +2,7 @@
 <meta name="viewport" content="initial-scale=0.5">
 <head>
     <link rel="stylesheet" href="styles.css">
+    <link rel="icon" type="image/png" href="images/icon_small.png">
     <title>Chris Prodoehl</title>
     <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
     <style>
@@ -171,8 +172,8 @@
             //console.clear();
 
             //const AudioContext = window.AudioContext || window.webkitAudioContext;
-
             const audioCtx = new(window.AudioContext || window.webkitAudioContext)();
+
             var audioElement = document.querySelector('audio');
             var track = audioCtx.createMediaElementSource(audioElement);
             var analyzer = audioCtx.createAnalyser();
@@ -188,11 +189,7 @@
               // play pause audio
               playButton.addEventListener('click', function() {
                   // check if context is in suspended state (autoplay policy)
-                // better as floats; floats crashes on mobile
-
-
-
-                if (audioCtx.state === 'suspended') {
+              	if (audioCtx.state === 'suspended') {
               		audioCtx.resume();
               	}
               	if (this.dataset.playing === 'false') {
@@ -223,7 +220,7 @@
 
             analyzer.fftSize = 64;
             const bufferLength = analyzer.fftSize;
-            var dataArray = new Uint8Array(bufferLength);
+            var dataArray = new Uint8Array(bufferLength); // better as floats; floats crashes on mobile
 
             var then = 0.0;
             var mean = 0.0;
@@ -241,8 +238,6 @@
 
                 analyzer.getByteTimeDomainData(dataArray);
 
-                  console.log(dataArray);
-
                 var square = 0.0;
                 for (var i = 0; i < bufferLength; i++) {
                     var  v = dataArray[i];
@@ -254,7 +249,7 @@
                 currRms = Math.sqrt(mean);
                 currRms *= 0.0019607; // divide by 512
                 currRms -= 0.25; // zero out the rms
-                console.log(currRms);
+                //console.log(afRms);
 
                 deltRms = currRms - lastRms;
                 lastRms = currRms;
@@ -263,6 +258,7 @@
 
                 if (currRms>0.00) { afRms += deltRms; }
 
+                console.log(afRms);
             }
             requestAnimationFrame(getRMS);
             track.connect(audioCtx.destination);
