@@ -3,6 +3,7 @@
 
 <head>
     <link rel="stylesheet" href="styles.css">
+    <link rel="icon" type="image/png" href="images/icon_small.png">
     <title>Chris Prodoehl</title>
     <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
 
@@ -20,7 +21,16 @@
           $("#nav").load("nav.html");
         });
         </script>
-
+        <script>
+        function addResponsive() {
+          var x = document.getElementById("topnav");
+          if (x.className === "nav-main") {
+            x.className += " responsive";
+          } else {
+            x.className = "nav-main";
+          }
+        }
+        </script>
         <div id="nav"></div>
 
         <div class="main_container">
@@ -52,11 +62,11 @@
               <div class="vid-descr">
                 <div class="inner-descr">
                   <p>
-                    Everything in the reel is my own work and made from scratch, from modeling and texturing to rigging and animating.<br><br>
-                    I did some procedural modeling in Houdini. The characters were almost all sculpted in Blender, with two exceptions:</p>
-                      <ul><li>In the man and fly shot, I made the human model and its base texture in MakeHuman and then did more painting in Substance Painter.</li>
-                      <li>In the shots with the runners, the runners are one of Houdini's stock bipeds, their running animation one of the stock .bclips.</li></ul>
-                    <p>Texturing throughout with Substance Painter. Rendered mostly with Octane, but in some cases with Renderman or Mantra.</p>
+                    Everything in the reel is my own work and made from scratch, from the modeling and texturing to the rigging and animating.<br><br>
+                    I did some procedural modeling in Houdini. The characters were almost all sculpted in Blender, with two exceptions. First,
+                    for the man and fly shot I made the human model and its base texture in MakeHuman, and then did additional painting in Substance Painter.
+                    Second, in the shots with the runners, the runners are one of Houdini's stock bipeds, their running animation one of the stock .bclips.<br><br>
+                    Texturing throughout is with Substance Painter. Rendered mostly with Octane, but in some cases with Renderman or Mantra.</p>
                 </div>
               </div>
             </div>
@@ -90,7 +100,7 @@
                 <div class="inner-descr">
                   <p>
                     Both characters started as original Blender sculpts, then rigged and animated in Houdini, textured in Substance Painter.
-                    Aside from the character models, everything but the hair was done in Houdini: special attention to modeling the booths, simulating the clothes. Rendered with Octane.
+                    Aside from the character models, everything else but the hair was done in Houdini: special attention to modeling the booths, simulating the clothes. Rendered with Octane.
                   </p>
                 </div>
               </div>
@@ -105,9 +115,9 @@
               <div class="vid-descr">
                 <div class="inner-descr">
                   <p>
-                    The model is a sculpt from scratch. I had been wanting to make a very realistic face, but backed off slightly from it because I liked this guy's look.
-                    The face rig I made in Houdini, but not using the AutoRig tool. I think a lot about efficient ways to rig a face.
-                    Like lots of the rest, textures from scratch with Substance Painter! Rendered with Octane.
+                    The model was sculpted from scratch. I had been wanting to make a very realistic face, but backed off slightly from it because I liked this guy's look.
+                    I made the face rig in Houdini, but not using the AutoRig tool. I think a lot about face rigs.
+                    Like lots of the other stuff, textures from scratch with Substance Painter! Rendered with Octane.
                   </p>
                 </div>
               </div>
@@ -122,7 +132,7 @@
               <div class="vid-descr">
                 <div class="inner-descr">
                   <p>
-                    One of the expressive goals here was to keep the source of the movement (the object of fear?) out of sight for as long as possible.
+                    One of the goals here was to keep the thing everyone's running from out of sight for as long as possible.
                       Crowd sim with one of the stock Houdini bipeds.
                   </p>
                 </div>
@@ -138,22 +148,22 @@
               <div class="vid-descr">
                 <div class="inner-descr">
                   <p>
-                    Looks kind of like cloth, but it isn't a physical simulation.
-                    Experiments with averaging primitive transforms, inspired in part by the technique of averaging point positions. With the initial conditions, you get nice curling and folding effects.
+                    Even though it looks kind of like cloth, it isn't a physical simulation.
+                    These are some first experiments with averaging primitive transforms, inspired in part by the technique of averaging point positions. With the right initial conditions, you get nice curling and folding effects.
                   </p>
                 </div>
               </div>
             </div>
           </div>
 
-          <div class="vid"><iframe src="https://player.vimeo.com/video/403544841?title=0&byline=0&portrait=0" width="640" height="360" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe></div>
+          <div class="vid"><iframe src="https://player.vimeo.com/video/403544841?title=0&byline=0&portrait=0" width="640" height="360" frameborder="0" allowfullscreen></iframe></div>
           <div class="col2">
             <div class="collapsible">
               <input id="collapsible7" class="toggle" type="checkbox">
               <label for="collapsible7" class="lbl-toggle"></label>
               <div class="vid-descr">
                 <div class="inner-descr">
-                  <p>
+                  <p id="abstract-descr">
                     A collection of abstract/procedural/simulated material.
                   </p>
                 </div>
@@ -188,7 +198,7 @@
                 <div class="inner-descr">
                   <p>
                     Screen Recording. The demo was written with OpenGL and uses the <a href="https://csound.com/">Csound</a> API.
-                    It's harder to tell without interacting with the program, but the pitch of the sound is sensitive to the height of camera view.
+                    It's kind of hard to tell without interacting with the program, but the pitch of the sound is sensitive to the height of camera view.
                     The terrain and the clouds are generated from noise maps or functions. The whole thing is rendered via raymarching.
                   </p>
                 </div>
@@ -204,8 +214,8 @@
               <div class="vid-descr">
                 <div class="inner-descr">
                   <p>
-                    Screen Recording. OpenGL and Csound. The particle system is responsive to the audio signal Csound generates. The particles are solved in a compute shader.
-                    The audio could go on indefinitely (it's "algorithmic" in basically the most boring sense).
+                    Screen Recording; OpenGL and Csound. The particle system is responsive to the audio signal Csound generates. The particles are solved in a compute shader.
+                    The audio could go on indefinitely (it's "algorithmic" in pretty much the most boring sense).
                   </p>
                 </div>
               </div>
@@ -221,7 +231,7 @@
                 <div class="inner-descr">
                   <p>
                     Screen Recording. OpenGL and Csound.
-                    The music is being read from a Csound score and synthesized in real time, though here it wouldn't make a difference if it were a recording.
+                    The music is being read from a Csound score and synthesized in real time. This is more like an a/v composition than the stuff above.
                   </p>
                 </div>
               </div>
@@ -236,7 +246,7 @@
               <div class="vid-descr">
                 <div class="inner-descr">
                   <p>
-                    Short a/v piece from a couple years ago, made in TouchDesigner. This video is from an offline render, but it runs easily at interactive framerates.
+                    Short a/v work from a couple years ago, made in TouchDesigner. This video is from an offline render, but it runs easily at interactive framerates.
                   </p>
                 </div>
               </div>
@@ -293,7 +303,7 @@
 
           <script>
           // When the user scrolls the page, execute myFunction
-          window.onscroll = function() {myFunction()};
+          window.onscroll = function() {addSticky()};
 
           // Get the navbar
           var navbar = document.getElementById("nav");
@@ -305,14 +315,14 @@
           var sticky = navbar.offsetTop;
 
           // Add the sticky class to the navbar when you reach its scroll position. Remove "sticky" when you leave the scroll position
-          function myFunction() {
+          function addSticky() {
               if (window.pageYOffset >= sticky) {
                 navbar.classList.add("sticky")
               } else {
                 navbar.classList.remove("sticky");
               }
 
-              if (document.body.scrollTop > 40 || document.documentElement.scrollTop > 40) {
+              if (document.body.scrollTop > 60 || document.documentElement.scrollTop > 60) {
                 mybutton.style.display = "block";
               } else {
                 mybutton.style.display = "none";
