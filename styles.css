@@ -1,0 +1,93 @@
+body { 
+    margin: 0;
+    font-family: sans-serif;
+    }
+
+h1 {
+    font-size: 1rem;
+    font-weight: bold;
+    display: inline;
+}
+
+.top { 
+    align-items: center;
+    display: flex;
+    padding-left: 10px;
+    padding-top: 1rem;
+    padding-bottom: 1.25em;
+    font-size: 1.5rem;
+}
+
+.separator {
+    margin: 0 8px;
+}
+
+.container {
+    display: grid;
+    gap: 30px;
+}
+
+hr {
+    max-width: 400px;
+    margin-left: 0px;
+}
+.about_me {
+    padding-left: 20px;
+    padding-right: 20px;
+    grid-column: 1;
+}
+
+#divide {
+    text-align: center;
+}
+
+.papers {
+    padding-left: 20px;
+    padding-right: 20px;
+    grid-column: 2;
+    grid-row: 1;
+}
+
+span.email_me {
+    font-style: italic;
+}
+
+details {
+    padding: .5em .5em 0;
+    font-size: 0.9em;
+    margin-bottom: -1.5em;
+}
+
+summary {
+    margin: -0.5em -0.5em 0;
+    padding: 0.25em;
+    font-size: 0.9em;
+}
+
+details[open] {
+    padding: 0.5em;
+}
+
+details[open] summary {
+    margin-bottom: 0.25em;
+    transition: all 0.3s;
+}
+
+@media screen and (min-device-width: 1224px) {
+    .container {
+        grid-template-columns: 400px 600px 400px;
+    }
+    
+}
+
+@media screen and (min-device-width: 320px) and (max-device-width:480px) {
+    .container {
+        grid-template-columns: 1fr;
+        grid-template-rows: 12.5rem;
+        row-gap: 5rem;
+    }
+    .papers {
+        grid-column: 1;
+        grid-row: 2;
+    }
+}

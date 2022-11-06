@@ -3,89 +3,75 @@
 	<head>
 		<meta charset="utf-8">
         <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
-		<link rel="icon" type="image/png" href="icon_small.png">
+        <link rel="icon" type="image/png" href="icon_small.png">
+		<link rel="stylesheet" href="styles.css">
         <title>Chris Prodoehl</title>
-
-        <style>
-			body { 
-                margin: 0;
-                font-family: sans-serif;
-             }
-
-            .top { 
-                align-items: center;
-                display: flex;
-                padding-left: 10px;
-
-            }
-            .separator {
-                margin: 0 8px;
-            }
-
-            @media screen and (min-device-width: 1224px) {
-                #draw_here { 
-                    position: fixed;
-                    width: 100%;
-                    height: 100%;
-                }
-            }
-
-            @media screen and (min-device-width: 320px) and (max-device-width:480px) {
-                #draw_here { 
-                    position: fixed;
-                    width: 100%;
-                    height: 100%;
-                 }
-            }
-		</style>
 	</head>
 
 	<body>
 
-		<script type="x-shader/x-vertex" id="vertexshader">
-
-			attribute vec3 custom_color;
-            attribute vec3 color;
-
-            varying vec3 vColor;
-
-            void main() {
-				vColor = custom_color;
-                
-                vec4 mvPosition = modelViewMatrix * vec4( position, 1.0 );
-
-				gl_PointSize = 5.0;
-
-				gl_Position = projectionMatrix * mvPosition;
-			}
-
-		</script>
-
-        <script type="x-shader/x-fragment" id="fragmentshader">
-
-			uniform vec3 color;
-
-            varying vec3 vColor;
-
-			void main() {
-				if ( length( gl_PointCoord - vec2( 0.5, 0.5 ) ) > 0.475 ) discard;
-
-				gl_FragColor = vec4( vColor, 1.0 );
-			}
-
-		</script>
-
         <div class="top">
-            <p id="descr">Chris Prodoehl</p>
+            <p id="main_name">Chris Prodoehl</p>
             <div class="separator">/</div>
             
-            <a href="https://vimeo.com/chrisprodoehl">vimeo</a>
+            <!--<a href="https://vimeo.com/chrisprodoehl">vimeo</a>-->
+            <a href="files\CP[CV].pdf" target="_blank">CV</a>
         </div>
-
-        <canvas id="draw_here"></canvas>
         
-        <!-- compiled with webpack -->
-		<script src="main.js"></script>
+        <div class="container">
+        
+            <div class="about_me">
+                <h1>About Me</h1>
+                <hr>
+                <p>
+                    I'm currently a Term Assistant Professor of Philosophy at Barnard College, Columbia University.
+                    <br><br>
+                    My research interests are in the philosophy of mind, philosophy of action, aesthetics, and Kant, with a special focus in each area on questions about creativity. 
+                    <br><br>
+                    <a href="files\CP[ResearchStatement].pdf" target="_blank">Reearch Statement</a>
+                </p>
+            </div>
+
+            <div class="papers">
+                <h1>Papers</h1> &nbsp <span class="email_me"><a href="https://philosophy.barnard.edu/profiles/chris-prodoehl">email me</a> for drafts</span>
+                <hr>
+                Aesthetic Insight and Mental Agency
+                <!--simple collapsible for the abstract-->
+                    <details>
+                        <summary>Abstract</summary>
+                        Do artists have control over their ideas for new work? This is often treated as a question about spontaneity, or the experience of control: Do events of having ideas for new work occur unexpectedly and without foresight? I suggest another way of interpreting the question, which has been mostly neglected by philosophers, and which is not settled by claims about spontaneity. According to that interpretation, the question is about agency: Are events of having ideas for new work exercises of mental agency? I argue that the answer is no. I go on to apply the results of this argument to questions about what is and is not intentional in the creative process. I conclude by examining another type of control artists might exercise over their creative mental events, which I call ‘facilitation’.
+                    </details>
+                <br><br>
+                Creative Intuition and Creative Feeling
+                    <details>
+                        <summary>Abstract</summary>
+                        The early phases of creative work are often guided by creative intuitions: experiences that make some ideas seem likely to lead to valuable new results, before any conscious evaluation of those ideas takes place. There is more than one type of creative intuition, but one thing the experiences all seem to share is <em>feeling</em>. Creative intuitions are in part “creative feelings,” described as, for example, feelings of promise, possibility, or coherence. What kind of feeling are creative feelings? The question has received almost no philosophical attention. To answer it, I first explain and criticize what I call “the epistemic account,” according to which creative feelings are epistemic feelings. I then explain and argue for an alternative: the aesthetic account. According to the aesthetic account, creative feelings are aesthetic, of same kind of feeling we might have in response to a moving piece of music. The aesthetic account bears on basic issues in aesthetics and the philosophy of creativity, and has implications for the philosophy of mind and action.
+                    </details>
+                <br><br>
+                Inspiration and Self-Consciousness
+                <br>
+                    <details>
+                        <summary>Abstract</summary>
+                        Some descriptions of creative experience sound like descriptions of thought insertion. Artists say that their ideas come from a source that is in some sense external to them, something minded or mind-like but not quite themselves. Claims like these do not seem like expressions of genuine pathology, however. More than that, they express an enduring way of thinking about creative experiences, including why those experiences are valuable. How should we understand the descriptions artists give of them? I argue that we should understand these experiences as involving a distinctive kind of self-consciousness, which I call "alterior self-consciousness." I explain what alterior self-consciousness is by developing a contrast with Kant’s discussion of self-consciousness in the <em>Critique of Pure Reason</em>. According to Kant, being conscious of ourselves as thinkers requires recognizing conceptual integration among our mental states. In creative experiences, I argue, mental states are not integrated conceptually in the same way, but they are nonetheless integrated in a way that supports self-consciousness.
+                    </details>
+                <br><br>
+                Creative Motivation
+                <br>
+                    <details>
+                        <summary>Abstract</summary>
+                        When an artist begins creative activity because she has an idea for new work that seems worth exploring, is this an exercise of rational agency? The question has not been pursued by philosophers of action or creativity. To answer it, I propose an account of a distinctive type of motivating attitude: creative motivation. I first argue that when artists recognize worthwhile ideas for new work, they take pleasure in those ideas, and that this pleasure is disinterested in the sense Kant develops in the <em>Critique of the Power of Judgment</em>. I then argue that when artists take disinterested pleasure in their ideas for new work, this pleasure can motivate them to create on the basis of those ideas. This is creative motivation. Finally, I argue that acting on creative motivation so understood is not an exercise of rational agency. The account of creative motives I propose unifies two aspects of creative experience: the recognition that ideas are worth pursuing and the motivation to pursue them.
+                    </details>
+                <br><br>
+                Lucky Artists
+                <br>
+                    <details>
+                        <summary>Abstract</summary>
+                        Imagine an artist creating new work, a painter applying paint to canvas with a brush, for example. Assuming she acts intentionally, is she responsible for the work she creates? Is she responsible, in particular, for whatever value her finished work has? In the first part of the paper, I formulate an argument for the claim she is not; I call this the Luck Argument. According to that argument, an important aspect of the work’s value is due to luck, so not something for which the artist is responsible. I then go on to challenge the Luck Argument. I suggest that intentional control is not the only type of control artists exercise over their bodily activity. There is another type, which I call receptive control. The concept of receptive control makes it possible to challenge a crucial premise in the Luck Argument. More significantly, it provides a novel way of thinking about the control of action.
+                    </details>
+                <br><br>
+            </div>
+        
+        </div>
 
 	</body>
 
