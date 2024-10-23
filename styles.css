@@ -31,10 +31,20 @@ hr {
     max-width: 400px;
     margin-left: 0px;
 }
+.picture {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 20px;
+    padding-right: 20px;
+    grid-column: 1;
+    grid-row: 1; /* pic in first row */
+}
 .about_me {
     padding-left: 20px;
     padding-right: 20px;
     grid-column: 1;
+    grid-row: 2 /* in the second row; picture in first */
 }
 
 #divide {
@@ -47,6 +57,7 @@ hr {
     grid-column: 2;
     grid-row: 1;
 }
+
 .journal-name {
     font-size: 0.9rem;
 }
@@ -82,7 +93,7 @@ details[open] summary {
 @media screen and (min-device-width: 1224px) {
     .container {
         grid-template-columns: 400px 600px 400px;
-        grid-template-rows: minmax(600px, auto);
+        grid-template-rows: minmax(100px, 250px);
         gap: 10px
     }
     /* not currently in use */
@@ -98,12 +109,17 @@ details[open] summary {
 @media screen and (min-device-width: 320px) and (max-device-width:480px) {
     .container {
         grid-template-columns: 1fr;
-        grid-template-rows: 12.5rem;
+        grid-template-rows: 12.5rem 13rem 12.5rem;
         row-gap: 5rem;
+    }
+    .picture {
+        max-width: 0.5fr;
+        grid-column: 1;
+        grid-row: 1;
     }
     .papers {
         grid-column: 1;
-        grid-row: 2;
+        grid-row: 3;
     }
     /* not currently in use */
     #p5_canvas {
@@ -113,5 +129,24 @@ details[open] summary {
         padding-bottom: 20px;
         justify-content: center;
         align-items: center;
+    }
+}
+
+/*media query: for reszied browser windows*/
+/* test min-width for resizing; test min-device-width to prevent weirdness on mobile*/
+@media screen and (max-width: 780px) and (min-device-width: 1224px) {
+    .container {
+        grid-template-columns: 600px;
+        grid-template-rows: 12.5rem 10.5rem 12.5rem;
+        row-gap: 5rem;
+    }
+    .picture {
+        max-width: 0.75fr;
+        grid-column: 1;
+        grid-row: 1;
+    }
+    .papers {
+        grid-column: 1;
+        grid-row: 3;
     }
 }
