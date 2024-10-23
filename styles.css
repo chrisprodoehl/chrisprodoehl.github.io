@@ -116,6 +116,9 @@ details[open] summary {
         max-width: 0.5fr;
         grid-column: 1;
         grid-row: 1;
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
     }
     .papers {
         grid-column: 1;
